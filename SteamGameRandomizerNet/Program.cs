@@ -20,36 +20,34 @@ namespace SteamGameRandomizerNet
                 Console.WriteLine("Retrieving list of games...");
 
                 var gamesList = locator.GetAllSteamGamesFromLibraryVdf(libVdfPath);
-                if (gamesList == null || !gamesList.Any())
+                if (gamesList != null && gamesList.Any())
                 {
-                    Console.WriteLine("Tough luck!");
-                    return;
+                    do
+                    {
+                        GenerateRandomGameSelection(gamesList);
+
+                        var input = Console.ReadLine();
+
+                        if (input.ToLower() == "y")
+                        {
+                            shuffleAgain = true;
+                            continue;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Done, son");
+                            shuffleAgain = false;
+                        }
+                    } while (shuffleAgain);
                 }
 
-                do
-                {
-                    GenerateRandomGameSelection(gamesList);
-
-                    var input = Console.ReadLine();
-
-                    if (input.ToLower() == "y")
-                    {
-                        shuffleAgain = true;
-                        continue;
-                    }
-                    else 
-                    {
-                        Console.WriteLine($"Done, son");
-                        shuffleAgain = false;
-                    }
-                } while (shuffleAgain);
-
+                Console.ReadLine();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
             }
-            Console.ReadLine();
+           
         }
 
         static void GenerateRandomGameSelection(List<string> gamesList)
