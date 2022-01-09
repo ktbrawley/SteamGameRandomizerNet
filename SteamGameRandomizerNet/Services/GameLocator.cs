@@ -33,7 +33,13 @@ namespace SteamGameRandomizer.Services
                     return gamesList;
                 }
 
-                var result = GetListOfSteamGames(vdfJson, out gamesList);
+                var gamesRetrieved = GetListOfSteamGames(vdfJson, out gamesList);
+
+                if (!gamesRetrieved)
+                {
+                    Console.WriteLine("Error finding any games on disk");
+                    return gamesList;
+                }
 
                 return gamesList;
             }

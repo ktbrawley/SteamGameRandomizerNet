@@ -12,13 +12,20 @@ namespace SteamGameRandomizerNet
         static void Main(string[] args)
         {
             GameLocator locator = new GameLocator();
+            var libVdfPath = @"C:\Program Files (x86)\Steam\steamapps\libraryfolders.vdf";
+            var shuffleAgain = false;
+
             try
             {
                 Console.WriteLine("Retrieving list of games...");
-                var libVdfPath = @"C:\Program Files (x86)\Steam\steamapps\libraryfolders.vdf";
-                var shuffleAgain = false;
 
                 var gamesList = locator.GetAllSteamGamesFromLibraryVdf(libVdfPath);
+                if (gamesList == null || !gamesList.Any())
+                {
+                    Console.WriteLine("Tough luck!");
+                    return;
+                }
+
                 do
                 {
                     GenerateRandomGameSelection(gamesList);
@@ -36,6 +43,7 @@ namespace SteamGameRandomizerNet
                         shuffleAgain = false;
                     }
                 } while (shuffleAgain);
+
             }
             catch (Exception ex)
             {
